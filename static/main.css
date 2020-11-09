@@ -1,0 +1,50 @@
+html, body {
+    height: 100%;
+    width: 100;
+    margin: 0 auto;
+}
+
+.container {
+    background-color: darkcyan;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    text-align: center;
+    color: rgb(43, 226, 156);
+}
+
+.container h1{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    margin-top: 100px;
+    color: rgb(39, 248, 238);
+
+}
+
+.container form{
+    margin: 30px;
+}
+
+.container input{
+    width: 500px;    
+    height: 15px;
+    margin: 2px;
+    padding: 20px;
+    font-size: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+.container button{
+    width: 100px;
+    height: 50px;
+    margin: 5px;
+    color: rgb(43, 226, 156);
+    background-color: rgb(65, 101, 149);
+    font-size: 17px;
+}
+
+.container p{
+    margin: 100px;
+    font-size: 20px;
+}
