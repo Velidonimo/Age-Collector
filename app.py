@@ -1,9 +1,11 @@
 from flask import request, render_template, Flask
 from flask_sqlalchemy import SQLAlchemy
+from send_email import send_email
+from sqlalchemy.sql import func
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:123@localhost/height_collector'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost/height_collector'
 db = SQLAlchemy(app)
 
 
@@ -27,9 +29,18 @@ def index():
 def success():
     if request.method == "POST":
         email = request.form['email_name']
-        height = int(request.form['height_name'])
-        print(email, height)
-        return render_template("success.html")
+        height = request.form['height_name']
+        if not db.session.query(Data).filter(Data.email == email).count():
+            db_row = Data(email, height)
+            db.session.add(db_row)
+            db.session.commit()
+            average_height = db.session.query(func.avg(Data.height)).scalar()
+            average_height = round(average_height, 1)
+            people_count = db.session.query(Data).count()
+            send_email(email, height, average_height, people_count)
+            return render_template("success.html")
+        else:
+            return render_template("index.html", text="Only one height data from each email")
 
 
 if __name__ == '__main__':
