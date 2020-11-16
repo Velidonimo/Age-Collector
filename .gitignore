@@ -1,3 +1,11 @@
+# manually
+virtual
+app1.py
+main1.css
+index1.html
+success1.html
+send1.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
