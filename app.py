@@ -37,7 +37,8 @@ def success():
             average_height = db.session.query(func.avg(Data.height)).scalar()
             average_height = round(average_height, 1)
             people_count = db.session.query(Data).count()
-            send_email(email, height, average_height, people_count)
+            if not send_email(email, height, average_height, people_count):
+                return render_template("index.html", text="Can't find the given email to send a message")
             return render_template("success.html")
         else:
             return render_template("index.html", text="Only one height data from each email")
