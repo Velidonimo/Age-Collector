@@ -40,6 +40,8 @@ def success():
             average_height = round(average_height, 1)
             people_count = db.session.query(Data).count()
             if not send_email(email, height, average_height, people_count):
+                db.session.query(Data).filter(Data.email == email).delete()
+                db.session.commit()
                 return render_template("index.html", text="Can't find the given email to send a message")
             return render_template("success.html")
         else:
