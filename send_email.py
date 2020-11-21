@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 
 def send_email(email, height, average_hight, people_count):
     from_email = "heightcollector@mail.ru"
-    from_passw = "anakwardpass"
+    from_passw = "thisisawkward"
 
     subj = "Height data"
     message = f"Hello. Your height is <strong>{height}</strong>. The average height of <strong>{people_count}</strong> is <strong>{average_hight}cm</strong>."
