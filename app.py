@@ -48,5 +48,17 @@ def success():
             return render_template("index.html", text="Only one height data from each email")
 
 
+# =================== a page for another porgram - FastFood Map ==============
+@app.route("/fastfood")
+def fastfood():
+    return render_template("rest_map.html")
+# ============================================================================
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
+
