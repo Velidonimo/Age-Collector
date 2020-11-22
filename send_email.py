@@ -23,7 +23,7 @@ def send_email(email, height, average_hight, people_count):
     try:
         mail.send_message(msg)
         return True
-    except smtplib.SMTPRecipientsRefused:
+    except (smtplib.SMTPRecipientsRefused, smtplib.SMTPDataError):
         return False
 
 
