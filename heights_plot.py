@@ -31,6 +31,8 @@ def build_plot(stat_df, height):
 
     output_file("templates/plot.html")
 
+    # adding a column shifted by 2.5 to show on plot
+    stat_df["Shifted_height"] = stat_df.Height + 2.5
     # adding a column for HoverTool
     stat_df["Hover"] = [hover_tooltip(height, st_ht, num) for st_ht, num in zip(stat_df.Height, stat_df.Population)]
     stat_cds = ColumnDataSource(stat_df)
@@ -44,10 +46,10 @@ def build_plot(stat_df, height):
                          tools="pan, wheel_zoom", active_scroll="wheel_zoom",
                          x_minor_ticks=2)
 
-    stat_glyph = height_plot.vbar(x="Height", width=4, bottom=0,
+    stat_glyph = height_plot.vbar(x="Shifted_height", width=4.5, bottom=0,
                                   top="Population", color="darkorange", source=stat_cds)
 
-    users_glyph = height_plot.vbar(x="Height", width=4, bottom=0,
+    users_glyph = height_plot.vbar(x="Shifted_height", width=4.5, bottom=0,
                                    top="Population", color="darkgreen", source=users_cds)
 
     your_height_hover = HoverTool(tooltips="@Hover")
