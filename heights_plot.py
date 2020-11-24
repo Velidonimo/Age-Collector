@@ -4,6 +4,17 @@ from bokeh.core.properties import Enum
 import pandas
 
 
+def rounding_heights(real_df):
+    """Making a new DataFrame with heights rounded to 5"""
+    real_df["Rounded_Height"] = real_df.Height // 5 * 5
+    new_heights = list(range(real_df.Rounded_Height.min(), real_df.Rounded_Height.max() + 1, 5))
+    new_heights_df = pandas.DataFrame(columns=("Height", "Population"))
+    new_heights_df.Height = new_heights
+    # summing population in each range
+    new_heights_df.Population = [real_df.loc[real_df.Rounded_Height == height]["Population"].sum() for height in new_heights]
+    return new_heights_df
+
+
 def hover_tooltip(user_height, stat_height, number):
     """a func to fill the Hover column of Dataframe"""
     if stat_height == user_height:
@@ -13,6 +24,11 @@ def hover_tooltip(user_height, stat_height, number):
 
 
 def build_plot(stat_df, height):
+    """Build a plot for given DataFrame and user_height"""
+    # rounding heights
+    height = height // 5 * 5
+    stat_df = rounding_heights(stat_df)
+
     output_file("templates/plot.html")
 
     # adding a column for HoverTool
@@ -39,9 +55,10 @@ def build_plot(stat_df, height):
 
     show(height_plot)
 
+
 if __name__ == '__main__':
-    df11 = pandas.read_csv("test_heights.csv")
-    build_plot(df11, 180)
+    df11 = pandas.read_csv("random_heights.csv")
+    build_plot(df11, 189)
 
 
 
