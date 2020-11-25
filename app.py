@@ -2,6 +2,8 @@ from flask import request, render_template, Flask
 from flask_sqlalchemy import SQLAlchemy
 from send_email import send_email
 from sqlalchemy.sql import func
+import pandas
+import heights_plot
 
 
 app = Flask(__name__)
@@ -38,10 +40,16 @@ def success():
             average_height = db.session.query(func.avg(Data.height)).scalar()
             average_height = round(average_height, 1)
             people_count = db.session.query(Data).count()
+
+            # trying to send email with height data to user
             if not send_email(email, height, average_height, people_count):
                 db.session.query(Data).filter(Data.email == email).delete()
                 db.session.commit()
                 return render_template("index.html", text="Can't find the given email to send a message")
+
+            # build a plot with height_statistic
+            df = pandas.read_sql_table("data", db.engine)
+            heights_plot.build_plot(df, int(height))
             return render_template("success.html")
         else:
             return render_template("index.html", text="Only one height data from each email")
