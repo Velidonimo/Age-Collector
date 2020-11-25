@@ -1,3 +1,7 @@
+# my
+*.ipynb
+
+
 # manually
 virtual
 app1.py
