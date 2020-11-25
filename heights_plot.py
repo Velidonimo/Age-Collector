@@ -1,4 +1,4 @@
-from bokeh.plotting import figure, output_file, show
+from bokeh.plotting import figure, output_file, show, save
 from bokeh.models import ColumnDataSource, HoverTool
 from bokeh.core.properties import Enum
 import pandas
@@ -57,7 +57,7 @@ def build_plot(df_from_sql, user_height):
     users_df = stat_df.loc[stat_df["Height"] == user_height]
     users_cds = ColumnDataSource(users_df)
 
-    height_plot = figure(height=200, width=500, title="Height statistic",
+    height_plot = figure(height=400, width=900, title="Height statistic",
                          x_axis_label="Height, cm", y_axis_label="Population",
                          tools="pan, wheel_zoom", active_scroll="wheel_zoom",
                          x_minor_ticks=2)
@@ -71,7 +71,7 @@ def build_plot(df_from_sql, user_height):
     your_height_hover = HoverTool(tooltips="@Hover")
     height_plot.add_tools(your_height_hover)
 
-    show(height_plot)
+    save(height_plot)
 
 
 if __name__ == '__main__':

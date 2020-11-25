@@ -55,5 +55,10 @@ def success():
             return render_template("index.html", text="Only one height data from each email")
 
 
+@app.route("/plot.html")
+def show_plot():
+    return render_template("plot.html")
+
+
 if __name__ == '__main__':
     app.run(debug=True)
