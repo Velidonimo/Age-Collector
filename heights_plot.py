@@ -30,10 +30,19 @@ def rounding_heights(real_df):
 
 def hover_tooltip(user_height, stat_height, number):
     """a func to fill the Hover column of Dataframe"""
+    hover_string = ""
     if stat_height == user_height:
-        return f"Your number is between {number} people"
+        if number > 1:
+            hover_string = f"Your number is between {number} people!"
+        else:
+            hover_string = f"You are the only one this big!"
     else:
-        return f"{number} people are this big"
+        if number > 1:
+            hover_string = f"{number} people are this big."
+        else:
+            hover_string = f"1 person is this big."
+
+    return hover_string
 
 
 def build_plot(df_from_sql, user_height):
