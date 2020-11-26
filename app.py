@@ -30,10 +30,11 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/success", methods=["POST"])
+@app.route("/success/", methods=["POST"])
 def success():
     if request.method == "POST":
         email = request.form['email_name']
+        global height
         height = request.form['height_name']
         if not db.session.query(Data).filter(Data.email == email).count():
             db_row = Data(email, height)
@@ -49,17 +50,22 @@ def success():
                 db.session.commit()
                 return render_template("index.html", text="Can't find the given email to send a message")
 
-            # build a plot with height_statistic
-            df = pandas.read_sql_table("data", db.engine)
-            heights_plot.build_plot(df, int(height))
+
             return render_template("success.html")
         else:
             return render_template("index.html", text="Only one height data from each email")
 
 
-@app.route("/plot")
+@app.route("/plot/")
 def show_plot():
-    return render_template("plot.html")
+    # build a plot with height_statistic
+    df = pandas.read_sql_table("data", db.engine)
+    script_plot, div_plot, cdn_js, cdn_css = heights_plot.build_plot(df, int(height))
+
+    return render_template("plot.html",
+                           script_plot=script_plot,
+                           div_plot=div_plot,
+                           cdn_js=cdn_js)
 
 
 # =================== a page for another porgram - FastFood Map ==============
@@ -70,4 +76,4 @@ def fastfood():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

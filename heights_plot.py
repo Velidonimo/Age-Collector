@@ -1,5 +1,7 @@
-from bokeh.plotting import figure, output_file, show, save
+from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, HoverTool
+from bokeh.embed import components
+from bokeh.resources import CDN
 import pandas
 
 
@@ -53,8 +55,6 @@ def build_plot(df_from_sql, user_height):
     user_height = user_height // 5 * 5
     stat_df = rounding_heights(stat_df)
 
-    output_file("templates/plot.html")
-
     # adding a column shifted by 2.5 to show on plot
     stat_df["Shifted_height"] = stat_df.Height + 2.5
     # adding a column for HoverTool
@@ -67,8 +67,10 @@ def build_plot(df_from_sql, user_height):
 
     height_plot = figure(height=400, width=900, title="Height statistic",
                          x_axis_label="Height, cm", y_axis_label="Population",
-                         tools="pan, wheel_zoom", active_scroll="wheel_zoom",
-                         x_minor_ticks=2)
+                         tools="pan", x_minor_ticks=None, y_minor_ticks=None)
+    height_plot.xaxis.ticker.desired_num_ticks = int((stat_df.Height.max() - stat_df.Height.min())/5)
+    height_plot.yaxis.ticker.desired_num_ticks = stat_df.Population.max()
+
 
     stat_glyph = height_plot.vbar(x="Shifted_height", width=4.5, bottom=0,
                                   top="Population", color="darkorange", source=stat_cds)
@@ -79,7 +81,15 @@ def build_plot(df_from_sql, user_height):
     your_height_hover = HoverTool(tooltips="@Hover")
     height_plot.add_tools(your_height_hover)
 
-    save(height_plot)
+    script, div = components(height_plot)
+    cdn_js = CDN.js_files[0]
+    cdn_css = CDN.css_files
+    if len(cdn_css) > 0:
+        cdn_css = cdn_css[0]
+
+    return (script, div, cdn_js, cdn_css)
+
+
 
 
 if __name__ == '__main__':
