@@ -8,7 +8,7 @@ import heights_plot
 
 app = Flask(__name__)
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost/height_collector'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123@localhost/height_collector'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://wdlpdymrblkhtf:9866128995f638c2be926bf34d0f4b15b884d4ab22eeb51dabc26f5a16fd42c0@ec2-52-200-48-116.compute-1.amazonaws.com:5432/d1rpm6uoboom6j?sslmode=require'
 
 db = SQLAlchemy(app)
@@ -57,6 +57,10 @@ def success():
             return render_template("index.html", text="Only one height data from each email")
 
 
+@app.route("/plot.html")
+def show_plot():
+    return render_template("plot.html")
+
 
 # =================== a page for another porgram - FastFood Map ==============
 @app.route("/fastfood")
@@ -65,11 +69,5 @@ def fastfood():
 # ============================================================================
 
 
-@app.route("/plot.html")
-def show_plot():
-    return render_template("plot.html")
-
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
