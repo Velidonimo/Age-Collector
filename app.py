@@ -13,6 +13,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://wdlpdymrblkhtf:9866128995f63
 
 db = SQLAlchemy(app)
 
+height = 0
+
 
 class Data(db.Model):
     __tablename__ = "data"
