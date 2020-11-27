@@ -13,8 +13,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://wdlpdymrblkhtf:9866128995f63
 
 db = SQLAlchemy(app)
 
-height = 0
-
 
 class Data(db.Model):
     __tablename__ = "data"
@@ -36,7 +34,6 @@ def index():
 def success():
     if request.method == "POST":
         email = request.form['email_name']
-        global height
         height = request.form['height_name']
         if not db.session.query(Data).filter(Data.email == email).count():
             db_row = Data(email, height)
@@ -62,7 +59,8 @@ def success():
 def show_plot():
     # build a plot with height_statistic
     df = pandas.read_sql_table("data", db.engine)
-    script_plot, div_plot, cdn_js, cdn_css = heights_plot.build_plot(df, int(height))
+    height = int(df.tail(1)["height"])
+    script_plot, div_plot, cdn_js, cdn_css = heights_plot.build_plot(df, height)
 
     return render_template("plot.html",
                            script_plot=script_plot,
