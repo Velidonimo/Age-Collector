@@ -65,8 +65,7 @@ def show_plot():
     return render_template("plot.html",
                            script_plot=script_plot,
                            div_plot=div_plot,
-                           cdn_js=cdn_js,
-                           test_height=height)
+                           cdn_js=cdn_js)
 
 
 # =================== a page for another porgram - FastFood Map ==============
