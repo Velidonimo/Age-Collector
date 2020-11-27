@@ -7,7 +7,7 @@ def send_email(email, height, average_hight, people_count):
     from_passw = "thisisawkward"
 
     subj = "Height data"
-    message = f"Hello. Your height is <strong>{height}</strong>. The average height of <strong>{people_count}</strong> is <strong>{average_hight}cm</strong>."
+    message = f"Hello. Your height is <strong>{height}</strong>. The average height of <strong>{people_count}</strong> people is <strong>{average_hight}cm</strong>."
 
     msg = MIMEText(message, "html")
     msg['Subject'] = subj
